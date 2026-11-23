@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f1">
+  <title>Memory Book — Sổ ghi nhớ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-mark">M</div><div><strong>Memory Book</strong><small>Sổ ghi nhớ cá nhân</small></div></div>
+    <button class="new-note primary" id="newNoteBtn"><span>＋</span> Tạo văn bản mới</button>
+    <nav class="nav">
+      <button class="nav-item active" data-view="all"><span>▤</span> Tất cả văn bản <b id="countAll">0</b></button>
+      <button class="nav-item" data-view="pinned"><span>📌</span> Đã ghim</button>
+      <button class="nav-item" data-view="favorites"><span>☆</span> Yêu thích</button>
+      <button class="nav-item" data-view="recent"><span>◷</span> Gần đây</button>
+      <div class="nav-heading">THƯ VIỆN</div>
+      <div class="category-list" id="categoryList"></div>
+      <button class="nav-item" id="addCategoryBtn"><span>＋</span> Thêm danh mục</button>
+      <button class="nav-item" data-view="tags"><span>#</span> Thẻ Tags</button>
+      <button class="nav-item" data-view="trash"><span>▧</span> Thùng rác <b id="countTrash">0</b></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="nav-item" data-view="settings"><span>⚙</span> Cài đặt</button>
+      <div class="storage-note"><span class="status-dot"></span> Dữ liệu lưu trên thiết bị này</div>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Mở menu">☰</button>
+      <div class="breadcrumbs" id="breadcrumb">Không gian của bạn <span>/</span> Tất cả văn bản</div>
+      <div class="top-actions">
+        <label class="search-box"><span>⌕</span><input id="searchInput" placeholder="Tìm kiếm văn bản..." autocomplete="off"><kbd>Ctrl K</kbd></label>
+        <button class="icon-btn" id="themeBtn" title="Đổi giao diện">☾</button>
+      </div>
+    </header>
+
+    <section class="content" id="listView">
+      <div class="page-heading">
+        <div><p class="eyebrow">KHÔNG GIAN CÁ NHÂN</p><h1 id="pageTitle">Tất cả văn bản</h1><p class="subheading" id="pageSubtitle">Tập hợp những điều bạn muốn lưu giữ.</p></div>
+        <div class="heading-actions"><button class="secondary-btn" id="sortBtn">↕ <span>Mới chỉnh sửa</span></button><button class="primary" id="headingNewBtn">＋ Văn bản mới</button></div>
+      </div>
+      <div class="toolbar">
+        <div class="filter-chips" id="filterChips"><button class="chip active" data-sort="updated">Mới chỉnh sửa</button><button class="chip" data-sort="created">Mới tạo</button><button class="chip" data-sort="oldest">Cũ nhất</button></div>
+        <div class="view-toggle"><button class="icon-btn selected" data-layout="grid" title="Dạng lưới">▦</button><button class="icon-btn" data-layout="list" title="Dạng danh sách">☷</button></div>
+      </div>
+      <div class="notes-grid" id="notesGrid"></div>
+      <div class="empty-state hidden" id="emptyState"><div class="empty-icon">✎</div><h2>Chưa có văn bản nào</h2><p>Tạo ghi chú đầu tiên để bắt đầu lưu giữ những điều quan trọng.</p><button class="primary" id="emptyNewBtn">＋ Tạo văn bản đầu tiên</button></div>
+    </section>
+
+    <section class="editor-view hidden" id="editorView">
+      <div class="editor-top"><button class="back-btn" id="backBtn">← Quay lại</button><div class="save-state" id="saveState">Đã lưu</div><div class="editor-actions"><button class="icon-btn" id="pinBtn" title="Ghim">📌</button><button class="icon-btn" id="favoriteBtn" title="Yêu thích">☆</button><button class="secondary-btn" id="duplicateBtn">Nhân bản</button><button class="danger-btn" id="deleteBtn">Xóa</button></div></div>
+      <div class="editor-paper">
+        <input class="title-input" id="noteTitle" placeholder="Tiêu đề văn bản..." maxlength="180">
+        <div class="meta-row"><select id="noteCategory" aria-label="Danh mục"></select><input id="noteTags" placeholder="Thẻ Tags, cách nhau bằng dấu phẩy"><span id="wordCount">0 từ</span></div>
+        <div class="format-toolbar"><button data-command="bold"><b>B</b></button><button data-command="italic"><i>I</i></button><button data-command="insertUnorderedList">• Danh sách</button><button data-command="formatBlock" data-value="h2">Tiêu đề</button><button data-command="formatBlock" data-value="p">Đoạn văn</button></div>
+        <div id="noteBody" class="note-body" contenteditable="true" data-placeholder="Bắt đầu viết điều bạn muốn ghi nhớ..."></div>
+        <div class="editor-footer"><span id="createdAt"></span><span>Tự động lưu trên thiết bị này</span></div>
+      </div>
+    </section>
+
+    <section class="content hidden" id="settingsView">
+      <div class="page-heading"><div><p class="eyebrow">TÙY CHỈNH</p><h1>Cài đặt</h1><p class="subheading">Quản lý giao diện và dữ liệu Memory Book.</p></div></div>
+      <div class="settings-grid">
+        <div class="settings-card"><h3>Giao diện</h3><p>Chọn giao diện phù hợp với bạn.</p><div class="setting-row"><span>Chế độ tối</span><label class="switch"><input type="checkbox" id="darkToggle"><span></span></label></div><div class="setting-row"><span>Cỡ chữ nội dung</span><select id="fontSize"><option value="15">Nhỏ</option><option value="17">Vừa</option><option value="19">Lớn</option></select></div><div class="setting-row"><span>Khoảng cách thẻ</span><select id="density"><option value="comfortable">Thoáng</option><option value="compact">Gọn</option></select></div></div>
+        <div class="settings-card"><h3>Sao lưu & khôi phục</h3><p>Hãy xuất bản sao lưu định kỳ để tránh mất dữ liệu.</p><div class="setting-buttons"><button class="secondary-btn" id="exportBtn">↓ Xuất toàn bộ JSON</button><label class="secondary-btn file-label">↑ Nhập bản sao lưu<input type="file" id="importFile" accept=".json,application/json" hidden></label></div><p class="hint">Nhập dữ liệu sẽ thay thế dữ liệu hiện có sau khi bạn xác nhận.</p></div>
+        <div class="settings-card"><h3>Xuất dữ liệu</h3><p>Tải xuống văn bản đang chọn trong trình chỉnh sửa dưới dạng TXT hoặc Markdown.</p><p class="hint">Mở một văn bản rồi dùng nút xuất ở thanh công cụ trình duyệt hoặc menu chuột phải để sao chép. Bạn cũng có thể xuất toàn bộ dữ liệu JSON ở trên.</p></div>
+        <div class="settings-card"><h3>Thống kê</h3><div class="stats-row"><div><strong id="statNotes">0</strong><span>Văn bản</span></div><div><strong id="statCategories">0</strong><span>Danh mục</span></div><div><strong id="statTrash">0</strong><span>Trong thùng rác</span></div></div><div class="setting-row"><span>Dung lượng lưu trữ ước tính</span><strong id="storageSize">Đang tính...</strong></div></div>
+      </div>
+    </section>
+
+    <section class="content hidden" id="tagsView"><div class="page-heading"><div><p class="eyebrow">PHÂN LOẠI</p><h1>Thẻ Tags</h1><p class="subheading">Chọn một thẻ để xem các văn bản liên quan.</p></div></div><div id="tagsCloud" class="tags-cloud"></div></section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<dialog id="categoryDialog"><form method="dialog" id="categoryForm"><h3 id="categoryDialogTitle">Thêm danh mục</h3><label>Tên danh mục<input id="categoryName" required maxlength="40" placeholder="Ví dụ: Ý tưởng"></label><label>Biểu tượng<input id="categoryIcon" maxlength="4" value="📁"></label><div class="dialog-actions"><button class="secondary-btn" value="cancel">Hủy</button><button class="primary" id="categorySave" value="default">Lưu danh mục</button></div></form></dialog>
+<script src="app.js"></script>
+</body>
+</html>
